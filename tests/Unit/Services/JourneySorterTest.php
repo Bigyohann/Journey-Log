@@ -8,7 +8,7 @@ use Bigyohann\TestMatawan\Model\Location;
 use Bigyohann\TestMatawan\Model\Transportation;
 use Bigyohann\TestMatawan\Services\JourneySorter;
 
-test( 'it should sort boarding cards and not match initial array', function (array $boardingCards) {
+test('it should sort boarding cards and not match initial array', function (array $boardingCards) {
     $journeySorter = new JourneySorter($boardingCards);
     expect($journeySorter->getSortedBoardingCards())
         ->toBeArray()
@@ -396,3 +396,91 @@ test('it should throw an error when no destination is found', function (array $b
         ),
     ]]
 ])->throws(NoDestinationExistException::class);
+
+test('it should return an array with good phrases', function (array $boardingCards, array $phrases) {
+    $journey = new JourneySorter($boardingCards);
+    expect($journey->generateJourneyLog())
+        ->toBeArray()
+        ->toMatchArray($phrases);
+})->with([
+    [
+        [
+            new BoardingCard(
+            new Location(
+                name: 'Madrid',
+                city: 'Madrid',
+                country: 'Spain',
+            ),
+            new Location(
+                name: 'Barcelona',
+                city: 'Barcelona',
+                country: 'Spain',
+            ),
+            new Transportation(
+                type: TransportationEnum::TRAIN,
+                name: '78A',
+            ),
+            seatAssignment: '45B'
+        ),
+            new BoardingCard(
+                new Location(
+                    name: 'Barcelona',
+                    city: 'Barcelona',
+                    country: 'Spain',
+                ),
+                new Location(
+                    name: 'Gerona Airport',
+                    city: 'Gerona',
+                    country: 'Spain',
+                    type: LocationTypeEnum::AIRPORT,
+                ),
+                new Transportation(
+                    type: TransportationEnum::BUS,
+                    name: 'airport bus',
+                ),
+            ), new BoardingCard(
+            new Location(
+                name: 'Gerona Airport',
+                city: 'Gerona',
+                country: 'Spain',
+                gate: '45B',
+            ),
+            new Location(
+                name: 'Stockholm',
+                city: 'Stockholm',
+                country: 'Sweden',
+            ),
+            new Transportation(
+                type: TransportationEnum::FLIGHT,
+                name: 'SK455',
+            ),
+            seatAssignment: '3A',
+            baggageDrop: '344',
+        ), new BoardingCard(
+            new Location(
+                name: 'Stockholm',
+                city: 'Stockholm',
+                country: 'Sweden',
+                gate: '22',
+            ),
+            new Location(
+                name: 'New York JFK',
+                city: 'New York',
+                country: 'USA',
+            ),
+            new Transportation(
+                type: TransportationEnum::FLIGHT,
+                name: 'SK22',
+            ),
+            seatAssignment: '7B',
+            baggageDrop: '334',
+        )],
+        [
+            'Take train 78A from Madrid to Barcelona. Sit in seat 45B.',
+            'Take the airport bus from Barcelona to Gerona Airport. No seat assignment.',
+            'From Gerona Airport, take flight SK455 to Stockholm. Gate 45B, seat 3A. Baggage drop at ticket counter 344.',
+            'From Stockholm, take flight SK22 to New York JFK. Gate 22, seat 7B. Baggage will be automatically transferred from your last leg.',
+            'You have arrived at your final destination.'
+        ]
+    ]
+]);
