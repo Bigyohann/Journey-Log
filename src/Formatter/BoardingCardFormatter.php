@@ -66,7 +66,7 @@ class BoardingCardFormatter
         $baggageDrop = $object->getBaggageDrop() ?
 
             sprintf('Baggage drop at ticket counter %s.', $object->getBaggageDrop()) :
-            'Baggage will we automatically transferred from your last leg.';
+            'Baggage will be automatically transferred from your last leg.';
         return sprintf(
             'From %s, take flight %s to %s. Gate %s, seat %s. %s',
             $object->getSource()->getName(),

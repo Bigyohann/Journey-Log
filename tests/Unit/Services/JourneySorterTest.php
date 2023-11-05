@@ -473,7 +473,6 @@ test('it should return an array with good phrases', function (array $boardingCar
                 name: 'SK22',
             ),
             seatAssignment: '7B',
-            baggageDrop: '334',
         )],
         [
             'Take train 78A from Madrid to Barcelona. Sit in seat 45B.',
