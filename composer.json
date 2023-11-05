@@ -1,0 +1,25 @@
+{
+    "name": "bigyohann/test-matawan",
+    "type": "library",
+    "php": "^8.2",
+    "autoload": {
+        "psr-4": {
+            "Bigyohann\\TestMatawan\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yohann BIGLIA",
+            "email": "contact@yohannbiglia.fr"
+        }
+    ],
+    "require-dev": {
+        "symfony/var-dumper": "^6.3",
+        "pestphp/pest": "^2.24"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
